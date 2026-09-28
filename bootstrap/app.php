@@ -13,6 +13,13 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->redirectUsersTo(function (Request $request): string {
+            if ($request->user()?->role === 'admin') {
+                return route('dashboard');
+            }
+
+            return route('pos.index');
+        });
 
         $middleware->alias([
             'role' => CheckRole::class,

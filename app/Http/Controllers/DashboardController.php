@@ -8,6 +8,10 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        if (auth()->user()?->role !== 'admin') {
+            abort(403, 'Role Anda ('.(auth()->user()?->role ?? 'Guest').') tidak memiliki akses ke halaman ini.');
+        }
+
         return view('dashboard');
     }
 
